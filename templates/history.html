@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Screening History - IronHer AI{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-1">Your Screening History</h2>
+        <p class="text-muted mb-0">Review past anemia risk assessments, biometric records, and nutrition plans.</p>
+    </div>
+    <a href="{{ url_for('assessment') }}" class="btn btn-primary-custom">
+        <i class="bi bi-plus-circle me-1"></i> New Assessment
+    </a>
+</div>
+
+<div class="card card-custom overflow-hidden">
+    {% if assessments %}
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col" class="ps-4">Date & Time</th>
+                    <th scope="col">BMI</th>
+                    <th scope="col">Diet</th>
+                    <th scope="col">Estimated Risk Tier</th>
+                    <th scope="col">Risk Probability</th>
+                    <th scope="col" class="text-end pe-4">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in assessments %}
+                <tr>
+                    <td class="ps-4">
+                        <div class="fw-semibold">{{ a.created_at.strftime('%b %d, %Y') }}</div>
+                        <small class="text-muted">{{ a.created_at.strftime('%I:%M %p') }}</small>
+                    </td>
+                    <td>
+                        <span class="badge bg-light text-dark border">{{ a.bmi }}</span>
+                    </td>
+                    <td>
+                        {% if a.vegetarian %}
+                            <span class="badge bg-success-subtle text-success">Vegetarian</span>
+                        {% else %}
+                            <span class="badge bg-secondary-subtle text-secondary">Non-Vegetarian</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if a.risk_level == 'Low' %}
+                            <span class="badge-low">Low Risk</span>
+                        {% elif a.risk_level == 'Moderate' %}
+                            <span class="badge-moderate">Moderate Risk</span>
+                        {% else %}
+                            <span class="badge-high">High Risk</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="fw-semibold">{{ (a.risk_probability * 100)|round(1) }}%</span>
+                            <div class="progress flex-grow-1" style="height: 6px; width: 60px;">
+                                <div class="progress-bar {% if a.risk_level == 'Low' %}bg-success{% elif a.risk_level == 'Moderate' %}bg-warning{% else %}bg-danger{% endif %}" 
+                                     style="width: {{ (a.risk_probability * 100)|round(1) }}%;"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text-end pe-4">
+                        <a href="{{ url_for('result', assessment_id=a.id) }}" class="btn btn-sm btn-outline-custom">
+                            <i class="bi bi-eye me-1"></i> View Result
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="p-5 text-center text-muted">
+        <i class="bi bi-inbox fs-1 d-block mb-3 opacity-50"></i>
+        <h5>No Prior Screenings Found</h5>
+        <p class="small mb-3">You have not completed any health risk screenings yet.</p>
+        <a href="{{ url_for('assessment') }}" class="btn btn-primary-custom btn-sm">
+            <i class="bi bi-clipboard-plus me-1"></i> Take Your First Assessment
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

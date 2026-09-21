@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% block title %}Educational Nutrition Guide - IronHer AI{% endblock %}
+
+{% block content %}
+<div class="mb-4 text-center">
+    <span class="badge bg-danger-subtle text-danger px-3 py-2 rounded-pill fw-bold mb-2">Evidence-Based Dietary Education</span>
+    <h2 class="display-6 fw-bold">Understanding Iron Nutrition for Women</h2>
+    <p class="text-muted mx-auto" style="max-width: 700px;">
+        Nutritional anemia is predominantly caused by insufficient bioavailable iron intake. Explore food sources, absorption enhancers, and dietary inhibitors.
+    </p>
+</div>
+
+<!-- Educational Sections -->
+<div class="row g-4 mb-5">
+    <!-- Heme vs Non-Heme Iron -->
+    <div class="col-lg-6">
+        <div class="card card-custom h-100 p-4">
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="stat-icon" style="background: #fbebf0; color: #8b1e3f;">
+                    <i class="bi bi-shield-shaded"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-0">Heme vs. Non-Heme Iron</h5>
+                    <small class="text-muted">Bioavailability Mechanism</small>
+                </div>
+            </div>
+            <p class="small text-muted mb-3">
+                Dietary iron exists in two distinct biochemical forms with fundamentally different absorption characteristics:
+            </p>
+            <div class="mb-3 p-3 bg-light rounded-3">
+                <h6 class="fw-bold text-danger mb-1"><i class="bi bi-droplet-fill me-1"></i> Heme Iron (Animal Sources)</h6>
+                <p class="small text-muted mb-0">
+                    Bound to hemoglobin and myoglobin proteins. Highly bioavailable (absorbed at <strong>15% to 35%</strong> efficiency). It is absorbed intact via the heme carrier protein 1 (HCP1) and is largely unaffected by dietary inhibitors like tea or phytates.
+                </p>
+            </div>
+            <div class="p-3 bg-light rounded-3">
+                <h6 class="fw-bold text-success mb-1"><i class="bi bi-flower1 me-1"></i> Non-Heme Iron (Plant Sources)</h6>
+                <p class="small text-muted mb-0">
+                    Found in plants, grains, legumes, and fortified foods. Absorbed at a lower baseline rate of <strong>2% to 20%</strong>. Highly sensitive to enhancers (such as Vitamin C) and inhibitors (tannins, calcium, phytates).
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Role of Vitamin C -->
+    <div class="col-lg-6">
+        <div class="card card-custom h-100 p-4">
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="stat-icon" style="background: #fff3cd; color: #856404;">
+                    <i class="bi bi-sun-fill"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-0">Vitamin C as an Iron Enhancer</h5>
+                    <small class="text-muted">Chemical Reduction (Fe3+ &rarr; Fe2+)</small>
+                </div>
+            </div>
+            <p class="small text-muted mb-3">
+                Ascorbic acid (Vitamin C) is the most potent physiological promoter of non-heme iron absorption:
+            </p>
+            <ul class="small text-muted mb-3 ps-3">
+                <li class="mb-2">
+                    <strong>Chemical Reduction:</strong> Non-heme iron in food is mostly in the insoluble ferric form (Fe<sup>3+</sup>). Vitamin C reduces it to soluble ferrous iron (Fe<sup>2+</sup>), which binds readily to the divalent metal transporter 1 (DMT1) in the enterocyte membrane.
+                </li>
+                <li class="mb-2">
+                    <strong>Chelation Protection:</strong> Vitamin C forms a soluble chelate complex at acidic gastric pH that remains soluble and absorbable even in the neutral pH environment of the small intestine.
+                </li>
+                <li>
+                    <strong>Counteracting Phytates:</strong> Just 50 mg of Vitamin C in a meal can double or triple the absorption of iron from a grain-heavy dish.
+                </li>
+            </ul>
+            <div class="alert alert-warning py-2 mb-0 small">
+                <i class="bi bi-lightbulb-fill me-1"></i> Tip: Squeeze fresh lemon juice over cooked lentils or eat guava/citrus alongside your meals.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Iron-Rich Food Tables -->
+<div class="row g-4 mb-5">
+    <div class="col-md-6">
+        <div class="card card-custom p-4 h-100">
+            <h5 class="fw-bold mb-3 text-dark"><i class="bi bi-check2-circle text-success me-2"></i>Top Plant-Based Iron Sources</h5>
+            <div class="table-responsive">
+                <table class="table table-sm align-middle small">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Food Item</th>
+                            <th>Portion</th>
+                            <th>Avg Iron Content</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-semibold">Cooked Lentils (Dal)</td>
+                            <td>1 cup (198g)</td>
+                            <td>~6.6 mg</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Cooked Chickpeas (Chana)</td>
+                            <td>1 cup (164g)</td>
+                            <td>~4.7 mg</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Moringa Leaves (Drumstick)</td>
+                            <td>100g fresh</td>
+                            <td>~4.0 mg</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Spinach (Palak, cooked)</td>
+                            <td>1 cup (180g)</td>
+                            <td>~6.4 mg</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Pumpkin Seeds (Pepitas)</td>
+                            <td>28g (1 oz)</td>
+                            <td>~2.5 mg</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Jaggery (Unrefined Cane)</td>
+                            <td>100g</td>
+                            <td>~3.0 mg</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card card-custom p-4 h-100">
+            <h5 class="fw-bold mb-3 text-dark"><i class="bi bi-check2-circle text-primary me-2"></i>Top Vitamin C Enhancers</h5>
+            <div class="table-responsive">
+                <table class="table table-sm align-middle small">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Food Item</th>
+                            <th>Portion</th>
+                            <th>Avg Vitamin C</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-semibold">Amla (Indian Gooseberry)</td>
+                            <td>1 medium (50g)</td>
+                            <td>~300 mg (Extremely Rich)</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Guava</td>
+                            <td>1 medium (100g)</td>
+                            <td>~228 mg</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Yellow / Red Bell Pepper</td>
+                            <td>1 cup chopped</td>
+                            <td>~150 mg</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Orange / Mosambi</td>
+                            <td>1 medium fruit</td>
+                            <td>~70 mg</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Lemon / Lime Juice</td>
+                            <td>2 tablespoons</td>
+                            <td>~15 mg</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Tomatoes (Fresh raw)</td>
+                            <td>1 medium</td>
+                            <td>~17 mg</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Absorption Inhibitors Guide -->
+<div class="card card-custom p-4 mb-5 border-start border-4 border-warning">
+    <div class="d-flex align-items-center gap-2 mb-2">
+        <i class="bi bi-slash-circle-fill text-warning fs-5"></i>
+        <h5 class="fw-bold mb-0">Major Dietary Iron Inhibitors</h5>
+    </div>
+    <p class="small text-muted mb-3">
+        Consuming these compounds concurrently with iron-rich meals significantly reduces uptake efficiency:
+    </p>
+    <div class="row g-3 small">
+        <div class="col-md-4">
+            <div class="p-3 bg-light rounded-3 h-100">
+                <h6 class="fw-bold text-dark mb-1">Tea & Coffee (Tannins & Polyphenols)</h6>
+                <p class="text-muted mb-0">
+                    Form insoluble chelates with non-heme iron, reducing absorption by up to 60-70%. Maintain an interval of 60 to 90 minutes between tea/coffee and iron-rich meals.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-3 bg-light rounded-3 h-100">
+                <h6 class="fw-bold text-dark mb-1">Phytates (Unsoaked Grains & Bran)</h6>
+                <p class="text-muted mb-0">
+                    Found in whole grains, seeds, and bran. Soaking, sprouting, or fermenting pulses and grains significantly reduces phytate content.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-3 bg-light rounded-3 h-100">
+                <h6 class="fw-bold text-dark mb-1">Excess Calcium (Milk / Antacids)</h6>
+                <p class="text-muted mb-0">
+                    Calcium competes with iron for binding pathways. Avoid consuming large glasses of milk or calcium antacids directly during an iron-focused meal.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Strict Disclaimer -->
+<div class="disclaimer-box shadow-sm mb-4">
+    <div class="d-flex align-items-start gap-3">
+        <i class="bi bi-shield-exclamation fs-3 text-warning"></i>
+        <div>
+            <h6 class="fw-bold mb-1">Educational Resource Notice</h6>
+            <p class="mb-0 small">
+                This nutrition guide is strictly informational and educational. It does not replace medical nutrition therapy, clinical diagnostics, or personalized medical care. Always discuss persistent fatigue, weakness, or suspected anemia with a certified medical doctor.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

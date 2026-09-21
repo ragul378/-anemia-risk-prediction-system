@@ -1,0 +1,431 @@
+/* AI-Driven Early Anemia Risk Prediction - Design System */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --primary-color: #8b1e3f;       /* Deep Ruby / Hemoglobin Red */
+  --primary-hover: #701431;
+  --primary-light: #fbebf0;
+  --secondary-color: #2e5266;     /* Slate Blue */
+  --secondary-light: #e8eef2;
+  --accent-coral: #e07a5f;        /* Warm Coral */
+  --accent-teal: #3d5a80;
+  --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+  --card-bg: #ffffff;
+  --text-dark: #23272a;
+  --text-muted: #6c757d;
+  --border-subtle: #e9ecef;
+  --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.05);
+  --shadow-hover: 0 15px 35px rgba(139, 30, 63, 0.12);
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text-dark);
+  background-color: #f8f9fc;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Navbar */
+.navbar-custom {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(139, 30, 63, 0.08);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.navbar-brand {
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: var(--primary-color) !important;
+  letter-spacing: -0.5px;
+}
+
+.nav-link {
+  font-weight: 500;
+  color: #495057 !important;
+  padding: 0.5rem 1rem !important;
+  transition: all 0.2s ease-in-out;
+  border-radius: var(--radius-sm);
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--primary-color) !important;
+  background-color: var(--primary-light);
+}
+
+/* Buttons */
+.btn-primary-custom {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(139, 30, 63, 0.2);
+}
+
+.btn-primary-custom:hover {
+  background-color: var(--primary-hover);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(139, 30, 63, 0.3);
+}
+
+.btn-outline-custom {
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  font-weight: 600;
+  padding: 0.6rem 1.3rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.btn-outline-custom:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+/* Cards */
+.card-custom {
+  background: var(--card-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-custom:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+.card-header-custom {
+  background: transparent;
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 1.25rem 1.5rem;
+  font-weight: 700;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, #fbf0f3 0%, #ffffff 50%, #f4f6fb 100%);
+  border-radius: var(--radius-lg);
+  padding: 4rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Badges */
+.badge-low {
+  background-color: #d1e7dd;
+  color: #0f5132;
+  font-weight: 600;
+  padding: 0.45em 0.85em;
+  border-radius: 20px;
+}
+
+.badge-moderate {
+  background-color: #fff3cd;
+  color: #664d03;
+  font-weight: 600;
+  padding: 0.45em 0.85em;
+  border-radius: 20px;
+}
+
+.badge-high {
+  background-color: #f8d7da;
+  color: #842029;
+  font-weight: 600;
+  padding: 0.45em 0.85em;
+  border-radius: 20px;
+}
+
+/* Risk Progress Bar */
+.risk-meter {
+  height: 14px;
+  border-radius: 7px;
+  background: #e9ecef;
+  overflow: hidden;
+  display: flex;
+}
+
+.risk-fill-low { background-color: #198754; }
+.risk-fill-moderate { background-color: #ffc107; }
+.risk-fill-high { background-color: #dc3545; }
+
+/* Disclaimer Banner */
+.disclaimer-box {
+  background: #fff8eb;
+  border-left: 4px solid #f59f00;
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  font-size: 0.9rem;
+  color: #6d4b00;
+}
+
+/* Forms */
+.form-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #343a40;
+  margin-bottom: 0.4rem;
+}
+
+.form-control, .form-select {
+  border-radius: var(--radius-sm);
+  border: 1.5px solid #ced4da;
+  padding: 0.65rem 0.9rem;
+  font-size: 0.95rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(139, 30, 63, 0.15);
+}
+
+/* Stat Cards on Dashboard */
+.stat-card {
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.stat-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  background: var(--primary-light);
+  color: var(--primary-color);
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  line-height: 1.1;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Footer */
+footer {
+  margin-top: auto;
+  background: #ffffff;
+  border-top: 1px solid var(--border-subtle);
+  padding: 2rem 0;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+/* =========================================================
+   Top-Right Floating AI Nutrition Copilot Chatbot Styles
+   ========================================================= */
+
+/* Floating Launcher Button - Top Right */
+.chat-floating-launcher {
+  position: fixed;
+  top: 85px;
+  right: 25px;
+  z-index: 1060;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #8b1e3f 0%, #a8284e 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 30px;
+  padding: 0.55rem 1.15rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  box-shadow: 0 8px 25px rgba(139, 30, 63, 0.35);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.chat-floating-launcher:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 12px 30px rgba(139, 30, 63, 0.45);
+  color: #ffffff;
+}
+
+.chat-pulse-dot {
+  width: 9px;
+  height: 9px;
+  background-color: #20c997;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 0 0 rgba(32, 201, 151, 0.7);
+  animation: pulseGreen 2s infinite;
+}
+
+@keyframes pulseGreen {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(32, 201, 151, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(32, 201, 151, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(32, 201, 151, 0); }
+}
+
+/* Floating Chat Panel - Top Right */
+.chat-panel {
+  position: fixed;
+  top: 85px;
+  right: 25px;
+  width: 390px;
+  max-width: calc(100vw - 35px);
+  height: 560px;
+  max-height: calc(100vh - 110px);
+  z-index: 1070;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid rgba(139, 30, 63, 0.15);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideInTopRight 0.25s ease-out;
+}
+
+@keyframes slideInTopRight {
+  from {
+    opacity: 0;
+    transform: translateY(-15px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Header */
+.chat-panel-header {
+  background: linear-gradient(135deg, #8b1e3f 0%, #68112c 100%);
+  color: #ffffff;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chat-panel-header .btn-icon {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.chat-panel-header .btn-icon:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Safety Ribbon inside chat */
+.chat-safety-ribbon {
+  background: #fff8eb;
+  border-bottom: 1px solid #ffeeba;
+  color: #795548;
+  font-size: 0.76rem;
+  padding: 0.4rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Message Stream */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.1rem;
+  background-color: #f8f9fb;
+}
+
+/* Suggestion Chips */
+.chat-quick-pill {
+  font-size: 0.78rem;
+  background: #ffffff;
+  border: 1px solid #dee2e6;
+  color: #495057;
+  padding: 0.35rem 0.65rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-block;
+  margin-bottom: 0.4rem;
+  margin-right: 0.3rem;
+}
+
+.chat-quick-pill:hover {
+  background: #fbebf0;
+  border-color: #8b1e3f;
+  color: #8b1e3f;
+  transform: translateY(-1px);
+}
+
+/* Chat Input Bar */
+.chat-input-bar {
+  padding: 0.75rem 1rem;
+  background: #ffffff;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.chat-input-bar .form-control {
+  border-radius: 20px;
+  font-size: 0.88rem;
+  padding-left: 1rem;
+}
+
+.chat-input-bar .btn-send {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.chat-input-bar .btn-send:hover {
+  background-color: var(--primary-hover);
+}
+
+/* Mobile adjustments */
+@media (max-width: 576px) {
+  .chat-floating-launcher {
+    top: 75px;
+    right: 15px;
+    padding: 0.45rem 0.9rem;
+    font-size: 0.82rem;
+  }
+  .chat-panel {
+    top: 65px;
+    right: 10px;
+    width: calc(100vw - 20px);
+    height: calc(100vh - 85px);
+  }
+}
+

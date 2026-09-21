@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Anemia Risk Screening & Nutrition System{% endblock %} - IronHer AI</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('index') }}">
+                <i class="bi bi-heart-pulse-fill text-danger fs-3"></i>
+                <span>IronHer <span class="badge bg-danger-subtle text-danger fs-6 align-middle">AI</span></span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/nutrition' %}active{% endif %}" href="{{ url_for('nutrition') }}">Nutrition Guide</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/about' %}active{% endif %}" href="{{ url_for('about') }}">About & Methodology</a>
+                    </li>
+                    {% if current_user %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/assessment' %}active{% endif %}" href="{{ url_for('assessment') }}">New Assessment</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/history' %}active{% endif %}" href="{{ url_for('history') }}">History</a>
+                    </li>
+                    {% endif %}
+                </ul>
+
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+                    {% if current_user %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle fs-5"></i>
+                            <span>{{ current_user.name }}</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                            <li><a class="dropdown-item" href="{{ url_for('profile') }}"><i class="bi bi-person me-2"></i>My Profile</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('history') }}"><i class="bi bi-clock-history me-2"></i>Past Screenings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="{{ url_for('logout') }}"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li class="nav-item me-2">
+                        <a class="btn btn-outline-custom btn-sm" href="{{ url_for('login') }}">Log In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-primary-custom btn-sm" href="{{ url_for('register') }}">Sign Up</a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <button class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1 rounded-pill px-3" id="navChatBtn" type="button" title="Open AI Nutrition Copilot">
+                            <i class="bi bi-robot"></i>
+                            <span>AI Copilot</span>
+                        </button>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Medical Safety Disclaimer Top Ribbon -->
+    <div class="bg-warning-subtle text-dark border-bottom py-2 small">
+        <div class="container d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-shield-exclamation text-warning-emphasis fs-5"></i>
+                <span><strong>Educational Prototype Notice:</strong> This tool provides educational risk screening and is not a medical diagnostic system. A healthcare professional and laboratory testing are required to diagnose anemia.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flash Messages -->
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main Page Content -->
+    <main class="flex-grow-1 py-4">
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-heart-pulse-fill text-danger"></i>
+                        <span class="fw-bold text-dark">IronHer AI System</span>
+                    </div>
+                    <p class="small text-muted mb-0 mt-1">
+                        Academic Machine Learning Project for Women's Nutritional Health Screening.
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <small class="text-muted d-block">
+                        Designed with Scikit-Learn, Flask, SQLAlchemy & Chart.js.
+                    </small>
+                    <small class="text-muted">
+                        No supplement prescriptions or dosage recommendations are provided.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- =========================================================
+         Top-Right Floating AI Nutrition Copilot Launcher & Panel
+         ========================================================= -->
+    <!-- Floating Launcher Pill (Top Right) -->
+    <button class="chat-floating-launcher" id="chatLauncherBtn" type="button" aria-label="Open AI Copilot">
+        <span class="chat-pulse-dot"></span>
+        <i class="bi bi-robot fs-5"></i>
+        <span>AI Copilot</span>
+    </button>
+
+    <!-- Floating Chat Window (Top Right) -->
+    <div class="chat-panel d-none shadow-lg" id="chatPanel" role="dialog" aria-labelledby="chatTitle">
+        <!-- Header -->
+        <div class="chat-panel-header">
+            <div class="d-flex align-items-center gap-2">
+                <div class="bg-white text-danger rounded-circle p-1 d-flex align-items-center justify-content-center" style="width: 28px; height: 28px;">
+                    <i class="bi bi-robot"></i>
+                </div>
+                <div>
+                    <h6 class="mb-0 fw-bold text-white fs-6" id="chatTitle">IronHer AI Copilot</h6>
+                    <small class="text-white-50" style="font-size: 0.72rem;"><span class="chat-pulse-dot me-1"></span>Online • Educational Assistant</small>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-1">
+                <button type="button" class="btn-icon" id="minimizeChatBtn" title="Minimize"><i class="bi bi-dash-lg"></i></button>
+                <button type="button" class="btn-icon" id="closeChatBtn" title="Close"><i class="bi bi-x-lg"></i></button>
+            </div>
+        </div>
+
+        <!-- Medical Guardrail Ribbon -->
+        <div class="chat-safety-ribbon">
+            <i class="bi bi-shield-check text-warning"></i>
+            <span>Food-first guidance • No supplement prescriptions</span>
+        </div>
+
+        <!-- Messages Stream -->
+        <div class="chat-messages" id="chatMessages">
+            <div class="d-flex justify-content-start mb-3">
+                <div class="p-3 rounded-3 bg-white text-dark border shadow-sm bot-bubble" style="max-width: 88%; font-size: 0.88rem; line-height: 1.45;">
+                    <p class="mb-2">👋 <strong>Hello! I am your IronHer AI Nutrition Copilot.</strong></p>
+                    <p class="small text-muted mb-2">Ask me anything about iron-rich foods, Vitamin C enhancers, tea/coffee timing, or menstrual nutrition:</p>
+                    <div>
+                        <span class="chat-quick-pill" data-query="How does Vitamin C boost iron absorption?">🍋 Vitamin C Boosters</span>
+                        <span class="chat-quick-pill" data-query="Best plant-based iron foods for vegetarians?">🌱 Vegetarian Iron</span>
+                        <span class="chat-quick-pill" data-query="Why avoid tea or coffee with meals?">☕ Tea Inhibitors</span>
+                        <span class="chat-quick-pill" data-query="What foods help with menstrual iron loss?">🩸 Menstrual Diet</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Form -->
+        <form class="chat-input-bar d-flex align-items-center gap-2" id="chatForm">
+            <input type="text" class="form-control" id="chatInput" placeholder="Ask about iron, absorption, foods..." autocomplete="off" required>
+            <button type="submit" class="btn-send" title="Send Question">
+                <i class="bi bi-send-fill"></i>
+            </button>
+        </form>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,38 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+env/
+venv/
+ENV/
+.venv/
+
+# Environment variables (NEVER commit secrets)
+.env
+
+# Database (generated at runtime — NOT tracked in git)
+instance/
+*.db
+*.sqlite3
+
+# Models — keep the .joblib in git so Render can skip retraining
+# Uncomment the line below if you prefer to retrain on Render (slower build):
+# models/*.joblib
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Pytest / Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs
+*.log

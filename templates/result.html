@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block title %}Screening Results & Nutrition Plan - IronHer AI{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        
+        <!-- Header Banner with Assessment ID and Date -->
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+            <div>
+                <span class="badge bg-secondary-subtle text-secondary mb-1">Assessment #{{ assessment.id }}</span>
+                <h2 class="fw-bold mb-0">AI Anemia Risk Screening Summary</h2>
+                <small class="text-muted">Recorded on {{ assessment.created_at.strftime('%B %d, %Y at %I:%M %p') }}</small>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="{{ url_for('assessment') }}" class="btn btn-outline-custom btn-sm">
+                    <i class="bi bi-arrow-repeat me-1"></i> Retake Assessment
+                </a>
+                <a href="{{ url_for('history') }}" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-clock-history me-1"></i> Screening History
+                </a>
+            </div>
+        </div>
+
+        <!-- Risk Prediction Score Card -->
+        <div class="card card-custom p-4 p-md-5 mb-4 border-top border-4 
+            {% if assessment.risk_level == 'Low' %}border-success
+            {% elif assessment.risk_level == 'Moderate' %}border-warning
+            {% else %}border-danger{% endif %}">
+            
+            <div class="row align-items-center">
+                <div class="col-md-7 border-end-md pe-md-4">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span class="text-muted text-uppercase fw-bold small">AI Screening Prediction Result</span>
+                        <span class="badge bg-light text-dark border">Random Forest Ensemble</span>
+                    </div>
+
+                    <div class="d-flex align-items-baseline gap-3 mb-3">
+                        <h1 class="display-5 fw-bold mb-0">
+                            {% if assessment.risk_level == 'Low' %}
+                                <span class="text-success">Low Risk</span>
+                            {% elif assessment.risk_level == 'Moderate' %}
+                                <span class="text-warning">Moderate Risk</span>
+                            {% else %}
+                                <span class="text-danger">High Risk</span>
+                            {% endif %}
+                        </h1>
+                        <span class="fs-4 text-muted">({{ (assessment.risk_probability * 100)|round(1) }}% Estimated Probability)</span>
+                    </div>
+
+                    <!-- Risk Progress Bar -->
+                    <div class="risk-meter mb-3">
+                        <div class="{% if assessment.risk_level == 'Low' %}risk-fill-low{% elif assessment.risk_level == 'Moderate' %}risk-fill-moderate{% else %}risk-fill-high{% endif %}" 
+                             style="width: {{ (assessment.risk_probability * 100)|round(1) }}%;"></div>
+                    </div>
+
+                    <p class="text-muted small mb-0">
+                        {% if assessment.risk_level == 'Low' %}
+                            Your physiological indicators and dietary habits suggest a low likelihood of nutritional iron deficiency anemia at this time. Maintain your nutrient-dense habits.
+                        {% elif assessment.risk_level == 'Moderate' %}
+                            Several dietary habits and/or reported symptoms indicate mild to moderate risk for iron depletion. Review the nutritional adjustments below.
+                        {% else %}
+                            Multiple clinical risk factors and symptoms strongly suggest elevated risk for iron deficiency anemia. A medical consultation is recommended.
+                        {% endif %}
+                    </p>
+                </div>
+
+                <div class="col-md-5 ps-md-4 mt-4 mt-md-0">
+                    <h6 class="fw-bold text-dark mb-3"><i class="bi bi-person-badge me-2 text-danger"></i>Biometric Parameters</h6>
+                    <ul class="list-unstyled small mb-0">
+                        <li class="py-1 border-bottom d-flex justify-content-between">
+                            <span class="text-muted">Age:</span>
+                            <span class="fw-semibold">{{ assessment.age }} years</span>
+                        </li>
+                        <li class="py-1 border-bottom d-flex justify-content-between">
+                            <span class="text-muted">Height / Weight:</span>
+                            <span class="fw-semibold">{{ assessment.height }} cm / {{ assessment.weight }} kg</span>
+                        </li>
+                        <li class="py-1 border-bottom d-flex justify-content-between">
+                            <span class="text-muted">Calculated BMI:</span>
+                            <span class="fw-semibold">{{ assessment.bmi }}</span>
+                        </li>
+                        <li class="py-1 border-bottom d-flex justify-content-between">
+                            <span class="text-muted">Dietary Pattern:</span>
+                            <span class="fw-semibold">{% if assessment.vegetarian %}Vegetarian{% else %}Non-Vegetarian{% endif %}</span>
+                        </li>
+                        <li class="py-1 d-flex justify-content-between">
+                            <span class="text-muted">Iron Food Frequency:</span>
+                            <span class="fw-semibold text-capitalize">{{ assessment.iron_rich_food_frequency }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Factors Considered by the Model (Strictly Phrased as Considered Factors, NOT Causes) -->
+        <div class="card card-custom p-4 mb-4">
+            <h5 class="fw-bold mb-3">
+                <i class="bi bi-funnel-fill text-danger me-2"></i>Factors Considered by the Model
+            </h5>
+            <p class="text-muted small mb-3">
+                The machine learning model evaluated the following physiological, nutritional, and symptomatic factors when estimating risk probability:
+            </p>
+
+            {% if factors %}
+            <div class="row g-3">
+                {% for f in factors %}
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded-3 border h-100">
+                        <div class="fw-bold text-dark d-flex align-items-center gap-2">
+                            <i class="bi bi-check2-circle text-primary"></i>
+                            <span>{{ f.factor }}</span>
+                        </div>
+                        <p class="text-muted small mb-0 mt-1">{{ f.impact }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-muted small mb-0">No elevated risk factors were identified in this screening.</p>
+            {% endif %}
+        </div>
+
+        <!-- Rule-Based Personalized Nutrition & Action Recommendations -->
+        <div class="card card-custom p-4 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold mb-0">
+                    <i class="bi bi-lightbulb-fill text-warning me-2"></i>Personalized Nutrition & Educational Recommendations
+                </h5>
+                <span class="badge bg-success-subtle text-success small">Food-First & Non-Prescription</span>
+            </div>
+            <p class="text-muted small mb-4">
+                These recommendations are automatically generated by our nutrition engine based on your dietary preferences, intake frequency, and reported factors.
+            </p>
+
+            <div class="row g-3">
+                {% for rec in recommendations %}
+                <div class="col-md-6">
+                    <div class="card h-100 border p-3 shadow-none bg-white">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="badge bg-danger-subtle text-danger small">{{ rec.category }}</span>
+                        </div>
+                        <h6 class="fw-bold text-dark mb-1">{{ rec.food }}</h6>
+                        <p class="text-muted small mb-0">{{ rec.reason }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Strict Medical Safety Callout Banner -->
+        <div class="disclaimer-box shadow-sm mb-4">
+            <div class="d-flex align-items-start gap-3">
+                <i class="bi bi-shield-exclamation fs-3 text-warning"></i>
+                <div>
+                    <h6 class="fw-bold mb-1">Medical Safety Reminder</h6>
+                    <p class="mb-0 small">
+                        This tool is an educational screening prototype and is not a medical diagnostic system. 
+                        A healthcare professional and appropriate laboratory testing are required to diagnose anemia. 
+                        Never start or adjust iron supplements, medications, or therapeutic dosages without consulting a licensed physician.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

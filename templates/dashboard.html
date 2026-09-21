@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - IronHer AI{% endblock %}
+
+{% block extra_css %}
+<style>
+    .chart-container {
+        position: relative;
+        height: 320px;
+        width: 100%;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+    <div>
+        <h2 class="fw-bold mb-1">Welcome back, {{ current_user.name }}!</h2>
+        <p class="text-muted mb-0">Here is your personal anemia risk monitoring summary and longitudinal trend.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="{{ url_for('assessment') }}" class="btn btn-primary-custom">
+            <i class="bi bi-plus-circle me-1"></i> New Assessment
+        </a>
+        <a href="{{ url_for('history') }}" class="btn btn-outline-custom">
+            <i class="bi bi-clock-history me-1"></i> View Full History
+        </a>
+    </div>
+</div>
+
+<!-- Key Metric Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-lg-3">
+        <div class="stat-card shadow-sm">
+            <div class="stat-icon">
+                <i class="bi bi-calendar2-check"></i>
+            </div>
+            <div>
+                <div class="stat-value">{{ stats.total_assessments }}</div>
+                <div class="stat-label">Total Screenings</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+        <div class="stat-card shadow-sm">
+            <div class="stat-icon" style="background: #fff3cd; color: #856404;">
+                <i class="bi bi-activity"></i>
+            </div>
+            <div>
+                <div class="stat-value">
+                    {% if stats.latest_risk_prob is not none %}
+                        {{ stats.latest_risk_prob }}%
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </div>
+                <div class="stat-label">Latest Risk Prob</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+        <div class="stat-card shadow-sm">
+            <div class="stat-icon" style="background: #e8eef2; color: #2e5266;">
+                <i class="bi bi-shield-shaded"></i>
+            </div>
+            <div>
+                <div class="stat-value fs-4">
+                    {% if stats.latest_risk_level == 'Low' %}
+                        <span class="badge-low">Low</span>
+                    {% elif stats.latest_risk_level == 'Moderate' %}
+                        <span class="badge-moderate">Moderate</span>
+                    {% elif stats.latest_risk_level == 'High' %}
+                        <span class="badge-high">High</span>
+                    {% else %}
+                        <span class="text-muted">None</span>
+                    {% endif %}
+                </div>
+                <div class="stat-label">Current Risk Tier</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+        <div class="stat-card shadow-sm">
+            <div class="stat-icon" style="background: #e7f5ff; color: #1971c2;">
+                <i class="bi bi-calculator"></i>
+            </div>
+            <div>
+                <div class="stat-value">
+                    {% if stats.total_assessments > 0 %}
+                        {{ stats.average_risk }}%
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </div>
+                <div class="stat-label">Average Risk</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Risk Probability Trend Line Chart -->
+<div class="card card-custom mb-4">
+    <div class="card-header-custom d-flex justify-content-between align-items-center">
+        <h5 class="fw-bold mb-0">
+            <i class="bi bi-graph-up text-primary me-2"></i>Estimated Risk Probability Timeline
+        </h5>
+        <span class="badge bg-secondary-subtle text-secondary small">Live Data from Database</span>
+    </div>
+    <div class="card-body p-4">
+        <div class="chart-container">
+            <canvas id="riskTrendChart"></canvas>
+        </div>
+        <p class="text-muted small text-center mt-3 mb-0">
+            * Thresholds: Low (&lt; 35%), Moderate (35% – 69%), High (&ge; 70%). These are software prototype screening thresholds.
+        </p>
+    </div>
+</div>
+
+<!-- Latest Screening Quick Details -->
+{% if stats.latest_assessment %}
+<div class="card card-custom p-4 mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold mb-0"><i class="bi bi-file-earmark-medical me-2 text-danger"></i>Latest Assessment Snapshot</h5>
+        <a href="{{ url_for('result', assessment_id=stats.latest_assessment.id) }}" class="btn btn-sm btn-outline-custom">
+            View Full Report & Recommendations <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+    </div>
+    <div class="row g-3">
+        <div class="col-md-3">
+            <small class="text-muted d-block">Screening Date</small>
+            <span class="fw-semibold">{{ stats.latest_date }}</span>
+        </div>
+        <div class="col-md-3">
+            <small class="text-muted d-block">Body Mass Index (BMI)</small>
+            <span class="fw-semibold">{{ stats.latest_assessment.bmi }}</span>
+        </div>
+        <div class="col-md-3">
+            <small class="text-muted d-block">Dietary Pattern</small>
+            <span class="fw-semibold">{% if stats.latest_assessment.vegetarian %}Vegetarian{% else %}Non-Vegetarian{% endif %}</span>
+        </div>
+        <div class="col-md-3">
+            <small class="text-muted d-block">Estimated Risk Tier</small>
+            {% if stats.latest_assessment.risk_level == 'Low' %}
+                <span class="badge-low">Low Risk</span>
+            {% elif stats.latest_assessment.risk_level == 'Moderate' %}
+                <span class="badge-moderate">Moderate Risk</span>
+            {% else %}
+                <span class="badge-high">High Risk</span>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="card card-custom p-5 text-center mb-4">
+    <i class="bi bi-clipboard2-pulse display-4 text-muted mb-3"></i>
+    <h5 class="fw-bold">No Screenings Recorded Yet</h5>
+    <p class="text-muted small mx-auto" style="max-width: 500px;">
+        Complete your first comprehensive health and dietary assessment to calculate your estimated anemia risk and receive personalized nutrition guidance.
+    </p>
+    <div>
+        <a href="{{ url_for('assessment') }}" class="btn btn-primary-custom">
+            <i class="bi bi-play-circle me-1"></i> Start First Assessment
+        </a>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

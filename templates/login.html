@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}Sign In - IronHer AI{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center py-4">
+    <div class="col-lg-9 col-xl-8">
+        <div class="card card-custom overflow-hidden border-0 shadow-lg">
+            <div class="row g-0">
+                <!-- Left Visual Brand Column -->
+                <div class="col-md-5 d-none d-md-flex flex-column justify-content-between p-4 p-lg-5 text-white" 
+                     style="background: linear-gradient(145deg, #8b1e3f 0%, #540b22 100%);">
+                    <div>
+                        <div class="d-flex align-items-center gap-2 mb-4">
+                            <i class="bi bi-heart-pulse-fill fs-2 text-white"></i>
+                            <span class="fs-4 fw-bold tracking-tight">IronHer AI</span>
+                        </div>
+                        <h4 class="fw-bold text-white mb-3">Empowering Women's Health with Artificial Intelligence</h4>
+                        <p class="text-white-50 small mb-4">
+                            Log in to track your anemia risk screening trajectory, review your personalized nutrition plans, and monitor your health over time.
+                        </p>
+                    </div>
+
+                    <div>
+                        <div class="d-flex align-items-center gap-3 mb-3 p-3 rounded-3" style="background: rgba(255, 255, 255, 0.1);">
+                            <i class="bi bi-shield-check fs-3 text-white"></i>
+                            <div class="small">
+                                <div class="fw-bold">Encrypted & Private</div>
+                                <div class="text-white-50">Per-user isolated records with salted cryptographic password protection.</div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-2 text-white-50 small">
+                            <i class="bi bi-stars"></i>
+                            <span>Academic Research Prototype</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Form Column -->
+                <div class="col-md-7 p-4 p-lg-5 bg-white">
+                    <div class="mb-4">
+                        <span class="badge bg-danger-subtle text-danger px-3 py-1 rounded-pill small fw-bold mb-2">Secure Portal</span>
+                        <h3 class="fw-bold text-dark mb-1">Welcome Back</h3>
+                        <p class="text-muted small mb-0">Sign in using your registered email and password.</p>
+                    </div>
+
+                    <!-- Quick 1-Click Demo Fill Box -->
+                    <div class="p-3 mb-4 rounded-3 border bg-light d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="small fw-bold text-dark"><i class="bi bi-person-badge-fill text-primary me-1"></i> College Viva / Demo User</div>
+                            <div class="text-muted" style="font-size: 0.78rem;"><code>demo@ironher.ai</code> / <code>password123</code></div>
+                        </div>
+                        <button type="button" id="btnFillDemo" class="btn btn-sm btn-outline-custom">
+                            <i class="bi bi-lightning-charge-fill me-1"></i> Quick Fill
+                        </button>
+                    </div>
+
+                    <form method="POST" action="{{ url_for('login', next=request.args.get('next')) }}" id="loginForm">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light text-muted"><i class="bi bi-envelope"></i></span>
+                                <input type="email" class="form-control" id="email" name="email" 
+                                       required placeholder="name@example.com" autocomplete="username">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <label for="password" class="form-label mb-0">Password <span class="text-danger">*</span></label>
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light text-muted"><i class="bi bi-lock"></i></span>
+                                <input type="password" class="form-control" id="password" name="password" 
+                                       required placeholder="Enter your password" autocomplete="current-password">
+                                <button class="btn btn-outline-secondary" type="button" id="togglePasswordBtn" title="Toggle password visibility">
+                                    <i class="bi bi-eye" id="togglePasswordIcon"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary-custom w-100 py-2 mb-3">
+                            <i class="bi bi-box-arrow-in-right me-2"></i> Sign In to Dashboard
+                        </button>
+
+                        <div class="text-center text-muted small pt-2 border-top">
+                            Don't have an account yet? 
+                            <a href="{{ url_for('register') }}" class="text-decoration-none fw-bold text-danger">Create free account</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. One-click demo login filler for seamless testing and viva demonstrations
+    const btnFillDemo = document.getElementById('btnFillDemo');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+
+    if (btnFillDemo && emailInput && passwordInput) {
+        btnFillDemo.addEventListener('click', () => {
+            emailInput.value = 'demo@ironher.ai';
+            passwordInput.value = 'password123';
+            emailInput.focus();
+        });
+    }
+
+    // 2. Password visibility toggle
+    const toggleBtn = document.getElementById('togglePasswordBtn');
+    const toggleIcon = document.getElementById('togglePasswordIcon');
+
+    if (toggleBtn && toggleIcon && passwordInput) {
+        toggleBtn.addEventListener('click', () => {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('bi-eye');
+                toggleIcon.classList.add('bi-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('bi-eye-slash');
+                toggleIcon.classList.add('bi-eye');
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

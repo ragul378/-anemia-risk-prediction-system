@@ -1,0 +1,263 @@
+{% extends "base.html" %}
+
+{% block title %}Screening Assessment - IronHer AI{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <div class="card card-custom p-4 p-md-5 mb-4">
+            <div class="border-bottom pb-3 mb-4">
+                <div class="d-flex align-items-center gap-2 mb-1">
+                    <span class="badge bg-danger-subtle text-danger px-3 py-1 rounded-pill">Screening Tool</span>
+                    <span class="text-muted small">Academic Prototype</span>
+                </div>
+                <h3 class="fw-bold text-dark">Comprehensive Anemia Risk Assessment</h3>
+                <p class="text-muted small mb-0">
+                    Complete this screening questionnaire covering biometric data, dietary patterns, and physiological symptoms.
+                    Our trained Random Forest model will calculate an estimated risk probability.
+                </p>
+            </div>
+
+            <form method="POST" action="{{ url_for('assessment') }}" id="assessmentForm">
+                
+                <!-- SECTION 1: Biometric Information & Dynamic BMI -->
+                <div class="mb-4">
+                    <h5 class="fw-bold text-dark mb-3">
+                        <i class="bi bi-person-lines-fill text-danger me-2"></i>1. Biometric & Physical Profile
+                    </h5>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="age" class="form-label">Age (Years) <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="age" name="age" 
+                                   value="{{ user.age or 25 }}" min="15" max="90" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="height" class="form-label">Height (in cm) <span class="text-danger">*</span></label>
+                            <input type="number" step="0.1" class="form-control" id="height" name="height" 
+                                   value="{{ user.height or 160 }}" min="100" max="220" required>
+                            <div class="form-text small">Standard metric centimeters.</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="weight" class="form-label">Weight (in kg) <span class="text-danger">*</span></label>
+                            <input type="number" step="0.1" class="form-control" id="weight" name="weight" 
+                                   value="{{ user.weight or 55 }}" min="30" max="250" required>
+                            <div class="form-text small">Body weight in kilograms.</div>
+                        </div>
+                    </div>
+
+                    <!-- Auto-calculated BMI Box -->
+                    <div class="mt-3 p-3 bg-light rounded-3 d-flex align-items-center justify-content-between border">
+                        <div>
+                            <span class="text-muted small d-block">Auto-Calculated Body Mass Index (BMI):</span>
+                            <span class="fs-4 fw-bold text-dark" id="bmi_display">--</span>
+                            <span id="bmi_category" class="ms-2"></span>
+                        </div>
+                        <span class="badge bg-secondary-subtle text-secondary small">Formula: kg / (m²)</span>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <!-- SECTION 2: Physiological & Gynecological Factors -->
+                <div class="mb-4">
+                    <h5 class="fw-bold text-dark mb-3">
+                        <i class="bi bi-gender-female text-danger me-2"></i>2. Physiological & Clinical Status
+                    </h5>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Do you experience heavy menstrual blood flow? <span class="text-danger">*</span></label>
+                            <div class="d-flex gap-4 mt-1">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="heavy_menstrual_flow" id="flow_no" value="no" checked>
+                                    <label class="form-check-label" for="flow_no">No (Normal)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="heavy_menstrual_flow" id="flow_yes" value="yes">
+                                    <label class="form-check-label" for="flow_yes">Yes (Heavy / Extended)</label>
+                                </div>
+                            </div>
+                            <small class="text-muted">Menorrhagia is a frequent contributor to negative iron balance.</small>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Are you currently pregnant? <span class="text-danger">*</span></label>
+                            <div class="d-flex gap-4 mt-1">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="pregnant" id="preg_no" value="no" checked>
+                                    <label class="form-check-label" for="preg_no">No</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="pregnant" id="preg_yes" value="yes">
+                                    <label class="form-check-label" for="preg_yes">Yes</label>
+                                </div>
+                            </div>
+                            <small class="text-muted">Pregnancy elevates maternal red blood cell demands.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <!-- SECTION 3: Dietary Patterns & Nutrient Bioavailability -->
+                <div class="mb-4">
+                    <h5 class="fw-bold text-dark mb-3">
+                        <i class="bi bi-egg-fried text-danger me-2"></i>3. Dietary Habits & Nutrient Bioavailability
+                    </h5>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Do you follow a vegetarian/plant-based diet? <span class="text-danger">*</span></label>
+                            <div class="d-flex gap-4 mt-1">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="vegetarian" id="veg_no" value="no" 
+                                           {% if user.dietary_preference != 'Vegetarian' and user.dietary_preference != 'Vegan' %}checked{% endif %}>
+                                    <label class="form-check-label" for="veg_no">No (Non-Vegetarian)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="vegetarian" id="veg_yes" value="yes"
+                                           {% if user.dietary_preference == 'Vegetarian' or user.dietary_preference == 'Vegan' %}checked{% endif %}>
+                                    <label class="form-check-label" for="veg_yes">Yes (Vegetarian / Vegan)</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="iron_rich_food_frequency" class="form-label">Iron-Rich Food Intake Frequency <span class="text-danger">*</span></label>
+                            <select class="form-select" id="iron_rich_food_frequency" name="iron_rich_food_frequency" required>
+                                <option value="rarely">Rarely (&lt; 2 times per week)</option>
+                                <option value="sometimes" selected>Sometimes (3 – 5 times per week)</option>
+                                <option value="often">Often (Daily / almost every meal)</option>
+                            </select>
+                            <small class="text-muted">Lentils, spinach, red meat, liver, pumpkin seeds, eggs.</small>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="vitamin_c_frequency" class="form-label">Vitamin C Food Frequency <span class="text-danger">*</span></label>
+                            <select class="form-select" id="vitamin_c_frequency" name="vitamin_c_frequency" required>
+                                <option value="rarely">Rarely (Infrequent citrus/raw fruits)</option>
+                                <option value="sometimes" selected>Sometimes (Weekly inclusion)</option>
+                                <option value="often">Often (Daily citrus, amla, peppers, guava)</option>
+                            </select>
+                            <small class="text-muted">Ascorbic acid directly enhances non-heme iron absorption.</small>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Do you drink Tea or Coffee with or right after meals? <span class="text-danger">*</span></label>
+                            <div class="d-flex gap-4 mt-1">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="tea_coffee_with_meals" id="tea_no" value="no" checked>
+                                    <label class="form-check-label" for="tea_no">No (Separate from meals)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="tea_coffee_with_meals" id="tea_yes" value="yes">
+                                    <label class="form-check-label" for="tea_yes">Yes (With or right after meals)</label>
+                                </div>
+                            </div>
+                            <small class="text-muted">Tannins in tea and coffee inhibit iron uptake.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <!-- SECTION 4: Symptom Checklist -->
+                <div class="mb-4">
+                    <h5 class="fw-bold text-dark mb-2">
+                        <i class="bi bi-activity text-danger me-2"></i>4. Symptoms Checklist (Self-Reported)
+                    </h5>
+                    <p class="text-muted small mb-3">Please select any persistent symptoms you have experienced over the past month:</p>
+
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="form-check card p-3 h-100 bg-light border">
+                                <input class="form-check-input ms-0 me-2" type="checkbox" name="fatigue" id="sym_fatigue" value="yes">
+                                <label class="form-check-label fw-semibold" for="sym_fatigue">Unusual Chronic Fatigue</label>
+                                <small class="text-muted d-block mt-1">Exhaustion despite adequate sleep.</small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-check card p-3 h-100 bg-light border">
+                                <input class="form-check-input ms-0 me-2" type="checkbox" name="dizziness" id="sym_dizziness" value="yes">
+                                <label class="form-check-label fw-semibold" for="sym_dizziness">Dizziness / Lightheadedness</label>
+                                <small class="text-muted d-block mt-1">Feeling faint upon standing.</small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-check card p-3 h-100 bg-light border">
+                                <input class="form-check-input ms-0 me-2" type="checkbox" name="weakness" id="sym_weakness" value="yes">
+                                <label class="form-check-label fw-semibold" for="sym_weakness">Generalized Muscle Weakness</label>
+                                <small class="text-muted d-block mt-1">Lack of muscular energy.</small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-check card p-3 h-100 bg-light border">
+                                <input class="form-check-input ms-0 me-2" type="checkbox" name="shortness_of_breath" id="sym_sob" value="yes">
+                                <label class="form-check-label fw-semibold" for="sym_sob">Shortness of Breath on Mild Exertion</label>
+                                <small class="text-muted d-block mt-1">Difficulty breathing during regular stairs or walking.</small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-check card p-3 h-100 bg-light border">
+                                <input class="form-check-input ms-0 me-2" type="checkbox" name="pale_skin" id="sym_pale" value="yes">
+                                <label class="form-check-label fw-semibold" for="sym_pale">Pale Skin or Pale Inner Eyelids</label>
+                                <small class="text-muted d-block mt-1">Paleness in conjunctiva, nails, or skin.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <!-- SECTION 5: Medical History -->
+                <div class="mb-4">
+                    <h5 class="fw-bold text-dark mb-3">
+                        <i class="bi bi-clock-history text-danger me-2"></i>5. Clinical History
+                    </h5>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Have you been diagnosed with anemia in the past?</label>
+                            <div class="d-flex gap-4 mt-1">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="previous_anemia" id="prev_no" value="no" checked>
+                                    <label class="form-check-label" for="prev_no">No</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="previous_anemia" id="prev_yes" value="yes">
+                                    <label class="form-check-label" for="prev_yes">Yes</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Do you have an existing chronic inflammatory condition?</label>
+                            <div class="d-flex gap-4 mt-1">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="chronic_condition" id="chron_no" value="no" checked>
+                                    <label class="form-check-label" for="chron_no">No</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="chronic_condition" id="chron_yes" value="yes">
+                                    <label class="form-check-label" for="chron_yes">Yes (e.g., Celiac, IBD, Thyroid)</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button and Safety Note -->
+                <div class="pt-3 border-top">
+                    <button type="submit" class="btn btn-primary-custom btn-lg w-100 py-3 mb-3">
+                        <i class="bi bi-cpu-fill me-2"></i> Run AI Risk Prediction & Generate Recommendations
+                    </button>
+                    <p class="text-center small text-muted mb-0">
+                        <i class="bi bi-lock-fill me-1"></i> Your information is kept strictly private and isolated to your account.
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}Home - AI-Driven Early Anemia Risk Prediction{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section mb-5 p-5 shadow-sm">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <span class="badge bg-danger-subtle text-danger px-3 py-2 rounded-pill fw-bold mb-3">
+                <i class="bi bi-stars me-1"></i> Academic Research Prototype
+            </span>
+            <h1 class="display-5 fw-bold text-dark mb-3">
+                AI-Driven Early Anemia Risk Screening for Women
+            </h1>
+            <p class="lead text-muted mb-4">
+                Evaluate physiological risk indicators, dietary patterns, and clinical symptoms through 
+                machine learning. Receive personalized, food-first nutritional education tailored to your lifestyle.
+            </p>
+            <div class="d-flex flex-wrap gap-3">
+                {% if current_user %}
+                    <a href="{{ url_for('assessment') }}" class="btn btn-primary-custom btn-lg">
+                        <i class="bi bi-clipboard-pulse me-2"></i>Start Screening Assessment
+                    </a>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-custom btn-lg">
+                        <i class="bi bi-speedometer2 me-2"></i>Go to Dashboard
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('register') }}" class="btn btn-primary-custom btn-lg">
+                        <i class="bi bi-person-plus me-2"></i>Create Free Account
+                    </a>
+                    <a href="{{ url_for('login') }}" class="btn btn-outline-custom btn-lg">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-lg-5 mt-4 mt-lg-0 text-center">
+            <div class="p-4 bg-white rounded-4 shadow-sm border border-light">
+                <div class="text-danger mb-3">
+                    <i class="bi bi-shield-check display-3"></i>
+                </div>
+                <h5 class="fw-bold">Non-Invasive Early Screening</h5>
+                <p class="small text-muted mb-3">
+                    Combining Random Forest predictive classification with rule-based dietary guidance.
+                </p>
+                <div class="d-flex justify-content-around text-start border-top pt-3">
+                    <div>
+                        <div class="fw-bold text-primary">17+</div>
+                        <small class="text-muted">Biomarkers & Habits</small>
+                    </div>
+                    <div>
+                        <div class="fw-bold text-success">3 Models</div>
+                        <small class="text-muted">Algorithm Benchmark</small>
+                    </div>
+                    <div>
+                        <div class="fw-bold text-danger">100%</div>
+                        <small class="text-muted">Food-First Focus</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Key Pillars -->
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="card h-100 card-custom p-4">
+            <div class="stat-icon mb-3">
+                <i class="bi bi-cpu"></i>
+            </div>
+            <h5 class="fw-bold">Machine Learning Model</h5>
+            <p class="text-muted small">
+                Evaluated against Logistic Regression and Decision Trees, utilizing an ensemble Random Forest 
+                pipeline with standard scaling and one-hot encoding for risk probability estimation.
+            </p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 card-custom p-4">
+            <div class="stat-icon mb-3">
+                <i class="bi bi-egg-fried"></i>
+            </div>
+            <h5 class="fw-bold">Personalized Nutrition</h5>
+            <p class="text-muted small">
+                Generates dietary recommendations based on vegetarian vs non-vegetarian diets, enhancing 
+                non-heme bioavailability with vitamin C and addressing dietary absorption inhibitors.
+            </p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 card-custom p-4">
+            <div class="stat-icon mb-3">
+                <i class="bi bi-graph-up"></i>
+            </div>
+            <h5 class="fw-bold">Longitudinal Tracking</h5>
+            <p class="text-muted small">
+                Interactive Chart.js dashboard provides timeline analysis of past screening probabilities, 
+                allowing users to monitor lifestyle improvements over time.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Prominent Medical Disclaimer Box -->
+<div class="disclaimer-box shadow-sm mb-4">
+    <div class="d-flex align-items-start gap-3">
+        <i class="bi bi-exclamation-triangle-fill fs-3 text-warning"></i>
+        <div>
+            <h6 class="fw-bold mb-1">Important Medical & Academic Disclaimer</h6>
+            <p class="mb-0 small">
+                This tool is an educational screening prototype and is not a medical diagnostic system. 
+                A healthcare professional and appropriate laboratory testing (such as Complete Blood Count and Serum Ferritin) 
+                are strictly required to diagnose anemia. This application does not prescribe medications, supplements, or dosages.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

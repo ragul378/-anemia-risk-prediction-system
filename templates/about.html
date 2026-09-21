@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}About & Methodology - IronHer AI{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="mb-4">
+            <span class="badge bg-danger-subtle text-danger px-3 py-2 rounded-pill fw-bold mb-2">Project Overview</span>
+            <h2 class="display-6 fw-bold">About the Project & Technical Methodology</h2>
+            <p class="lead text-muted">
+                AI-Driven Early Anemia Risk Prediction and Personalized Nutrition Recommendation System for Women.
+            </p>
+        </div>
+
+        <!-- Academic Context & Motivation -->
+        <div class="card card-custom p-4 p-md-5 mb-4">
+            <h4 class="fw-bold mb-3"><i class="bi bi-mortarboard-fill text-danger me-2"></i>Problem Statement & Motivation</h4>
+            <p class="text-muted">
+                According to the World Health Organization (WHO), anemia affects approximately <strong>29.9% of women of reproductive age (15–49 years)</strong> worldwide, 
+                and nearly <strong>36.5% of pregnant women</strong>. In low- and middle-income regions, dietary iron deficiency is responsible for more than 50% of all cases.
+            </p>
+            <p class="text-muted">
+                Conventional detection depends on laboratory blood draws (e.g., hemoglobin concentration via CBC, serum ferritin levels). 
+                However, logistical hurdles, clinical costs, and lack of symptom awareness often prevent timely testing. 
+                This academic project develops a <strong>non-invasive, early AI risk-screening prototype</strong> combined with 
+                <strong>food-first personalized nutritional guidance</strong> to empower women with actionable insights before severe deficiency occurs.
+            </p>
+        </div>
+
+        <!-- System Architecture & Tech Stack -->
+        <div class="card card-custom p-4 p-md-5 mb-4">
+            <h4 class="fw-bold mb-3"><i class="bi bi-diagram-3-fill text-primary me-2"></i>System Architecture & Technology Stack</h4>
+            <div class="row g-4 mb-4">
+                <div class="col-md-3">
+                    <div class="p-3 bg-light rounded-3 h-100">
+                        <div class="fw-bold text-dark mb-1">Frontend Layer</div>
+                        <ul class="list-unstyled small text-muted mb-0">
+                            <li>• Semantic HTML5</li>
+                            <li>• CSS3 & Plus Jakarta Sans</li>
+                            <li>• Bootstrap 5.3</li>
+                            <li>• Chart.js Line Trends</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 bg-light rounded-3 h-100">
+                        <div class="fw-bold text-dark mb-1">Backend Layer</div>
+                        <ul class="list-unstyled small text-muted mb-0">
+                            <li>• Python 3</li>
+                            <li>• Flask (Clean Architecture)</li>
+                            <li>• Session-Based Auth</li>
+                            <li>• RESTful API Endpoints</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 bg-light rounded-3 h-100">
+                        <div class="fw-bold text-dark mb-1">Database Layer</div>
+                        <ul class="list-unstyled small text-muted mb-0">
+                            <li>• Flask-SQLAlchemy 3.1</li>
+                            <li>• SQLite (Local dev)</li>
+                            <li>• PostgreSQL (Production)</li>
+                            <li>• Relational Integrity (1:N:N)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 bg-light rounded-3 h-100">
+                        <div class="fw-bold text-dark mb-1">Machine Learning</div>
+                        <ul class="list-unstyled small text-muted mb-0">
+                            <li>• Scikit-Learn Pipeline</li>
+                            <li>• ColumnTransformer</li>
+                            <li>• Random Forest Ensemble</li>
+                            <li>• Joblib Serialization</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <h5 class="fw-bold text-dark mb-2">Machine Learning Pipeline Workflow</h5>
+            <ol class="text-muted small ps-3">
+                <li class="mb-2"><strong>Feature Ingestion:</strong> Ingests 17 distinct biological, dietary, and symptomatic variables.</li>
+                <li class="mb-2"><strong>Preprocessing:</strong> Numerical features (Age, Height, Weight, BMI) are standardized via <code>StandardScaler</code>; categorical features (food intake frequencies) are one-hot encoded via <code>OneHotEncoder</code>; binary physiological indicators are passed through.</li>
+                <li class="mb-2"><strong>Model Comparison:</strong> Evaluated Logistic Regression, Decision Tree Classifier, and Random Forest Classifier across Accuracy, Precision, Recall, F1-Score, and ROC-AUC.</li>
+                <li class="mb-2"><strong>Model Selection:</strong> Random Forest Classifier selected for superior non-linear feature interaction modeling and generalization on multi-factorial risk data.</li>
+                <li><strong>Probability Mapping:</strong> Employs prototype probability thresholds (Low: &lt; 0.35, Moderate: 0.35–0.69, High: &ge; 0.70) for early lifestyle alerting.</li>
+            </ol>
+        </div>
+
+        <!-- Ethical, Clinical & Medical Disclaimers -->
+        <div class="disclaimer-box shadow-sm mb-4">
+            <div class="d-flex align-items-start gap-3">
+                <i class="bi bi-shield-exclamation fs-2 text-warning"></i>
+                <div>
+                    <h5 class="fw-bold mb-2">Mandatory Academic & Clinical Boundary Notice</h5>
+                    <p class="small mb-2">
+                        1. <strong>Not a Diagnostic System:</strong> This application is strictly an educational research prototype. Anemia is a clinical condition requiring blood testing (hemoglobin, hematocrit, ferritin, iron binding capacity) evaluated by certified clinicians.
+                    </p>
+                    <p class="small mb-2">
+                        2. <strong>No Medication or Supplement Prescriptions:</strong> High-dose iron supplementation without laboratory confirmation carries severe risks, including hemochromatosis and organ toxicity. This system adheres strictly to food-first educational recommendations.
+                    </p>
+                    <p class="small mb-0">
+                        3. <strong>Data Privacy & Protection:</strong> All user records, assessments, and biometric data are secured with bcrypt/werkzeug password hashing and strict database relational isolation.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
